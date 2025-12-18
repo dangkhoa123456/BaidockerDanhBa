@@ -1,10 +1,19 @@
 <?php
-// ===== DATABASE CONNECTION =====
-$host = 'localhost';
-$db = 'contact_db';
-$user = 'root';
-$pass = '';
+// 1. Lấy thông tin từ cấu hình Render
+$host = getenv('DB_HOST');
+$port = getenv('DB_PORT');
+$user = getenv('DB_USER');
+$pass = getenv('DB_PASS');
+$dbname = getenv('DB_NAME');
 
+// 2. Kiểm tra: Nếu không có biến môi trường (tức là đang chạy ở máy local), thì dùng localhost
+if (!$host) {
+    $host = 'localhost';
+    $user = 'root';
+    $pass = '';
+    $dbname = 'test'; // Tên DB trên máy tính của bạn
+    $port = 3306;
+}
 try {
     $pdo = new PDO("mysql:host=$host;dbname=$db;charset=utf8mb4", $user, $pass);
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
