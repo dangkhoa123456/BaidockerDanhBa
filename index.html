@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản lý Danh bạ</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            padding: 30px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 30px;
+            font-size: 28px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #555;
+            font-weight: 500;
+        }
+
+        input[type="text"],
+        input[type="tel"] {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 14px;
+            transition: border-color 0.3s;
+        }
+
+        input[type="text"]:focus,
+        input[type="tel"]:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 5px rgba(102, 126, 234, 0.3);
+        }
+
+        .input-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        button {
+            padding: 12px 25px;
+            background-color: #667eea;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #5568d3;
+        }
+
+        button.delete-btn {
+            background-color: #e74c3c;
+            padding: 8px 15px;
+            font-size: 12px;
+        }
+
+        button.delete-btn:hover {
+            background-color: #c0392b;
+        }
+
+        button.edit-btn {
+            background-color: #f39c12;
+            padding: 8px 15px;
+            font-size: 12px;
+            margin-right: 5px;
+        }
+
+        button.edit-btn:hover {
+            background-color: #e67e22;
+        }
+
+        .search-section {
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #eee;
+        }
+
+        .form-section {
+            margin-bottom: 30px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 5px;
+        }
+
+        .form-section h2 {
+            font-size: 16px;
+            margin-bottom: 15px;
+            color: #333;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th {
+            background-color: #667eea;
+            color: white;
+            padding: 12px;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        td {
+            padding: 12px;
+            border-bottom: 1px solid #eee;
+        }
+
+        tr:hover {
+            background-color: #f8f9fa;
+        }
+
+        .actions {
+            display: flex;
+            gap: 5px;
+        }
+
+        .no-data {
+            text-align: center;
+            padding: 30px;
+            color: #999;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+
+        .modal.show {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .modal-content h2 {
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .modal-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .modal-buttons button {
+            flex: 1;
+        }
+
+        .modal-buttons .cancel-btn {
+            background-color: #95a5a6;
+        }
+
+        .modal-buttons .cancel-btn:hover {
+            background-color: #7f8c8d;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📋 Quản lý Danh bạ</h1>
+
+        <!-- SEARCH SECTION -->
+        <div class="search-section">
+            <div class="form-group">
+                <label>🔍 Tìm kiếm theo tên:</label>
+                <input type="text" id="searchInput" placeholder="Nhập tên để tìm...">
+            </div>
+        </div>
+
+        <!-- ADD FORM SECTION -->
+        <div class="form-section">
+            <h2>➕ Thêm liên hệ mới</h2>
+            <div class="input-row">
+                <div class="form-group">
+                    <label>Tên:</label>
+                    <input type="text" id="nameInput" placeholder="Nhập tên">
+                </div>
+                <div class="form-group">
+                    <label>Số điện thoại:</label>
+                    <input type="tel" id="phoneInput" placeholder="Nhập SĐT">
+                </div>
+            </div>
+            <button onclick="addContact()">Lưu</button>
+        </div>
+
+        <!-- TABLE SECTION -->
+        <h2 style="margin-top: 30px; margin-bottom: 15px; color: #333;">📞 Danh sách liên hệ</h2>
+        <table id="contactTable">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Tên</th>
+                    <th>Số điện thoại</th>
+                    <th>Hành động</th>
+                </tr>
+            </thead>
+            <tbody id="tableBody">
+                <tr class="no-data">
+                    <td colspan="4">Chưa có liên hệ nào. Hãy thêm một liên hệ mới!</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- EDIT MODAL -->
+    <div id="editModal" class="modal">
+        <div class="modal-content">
+            <h2>Chỉnh sửa liên hệ</h2>
+            <div class="form-group">
+                <label>Tên:</label>
+                <input type="text" id="editNameInput" placeholder="Nhập tên">
+            </div>
+            <div class="form-group">
+                <label>Số điện thoại:</label>
+                <input type="tel" id="editPhoneInput" placeholder="Nhập SĐT">
+            </div>
+            <div class="modal-buttons">
+                <button class="cancel-btn" onclick="closeEditModal()">Hủy</button>
+                <button onclick="saveEdit()">Lưu</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="frontend/script.js"></script>
+</body>
+</html>
