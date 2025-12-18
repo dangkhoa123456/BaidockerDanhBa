@@ -1,4 +1,4 @@
-const API_URL = 'http://localhost/Project1MNM/backend/api.php';
+const API_URL = 'https://project1manguonmmo.onrender.com/api.php';
 
 let editingId = null;
 let currentSearch = '';
